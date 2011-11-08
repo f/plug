@@ -1,0 +1,326 @@
+<!doctype html>
+<html>
+<head>
+    <script src="//code.jquery.com/jquery-latest.js"></script>
+    <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/idea.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        $(document).ready(function() {
+            $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+        });
+    </script>
+    <script src="plug.js"></script>
+    <script src="plugins.js"></script>
+</head>
+<body>
+<div class="wrap">
+<header>
+    <h1>
+        <img src="plug.png">
+        plug.js</h1>
+</header>
+<section>
+    <article>
+
+        <h2>What is $plug?</h2>
+
+        <p>
+            $plug is simple, tiny, only <strong>4 KB</strong> sized helper to create element based plugins for jQuery.
+        </p>
+
+        <h2>Get it now!</h2>
+        <p>
+            You can download
+            <a href="plug.min.js"> compressed</a> or
+            <a href="plug.js">uncompressed</a> versions of $plug. If you want, you can <a href="javascript:;" onclick="$('#src').slideToggle();">see</a>
+            the source code.
+<pre style="display: none;" id="src"><code class="javascript">/**
+ * Copyright 2011 fapprika.com
+ * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ *
+ * Author: fapprika.com
+ * Info: info@fapprika.com
+ */
+function $plug(name, defaults, functions) {
+    if (arguments.length == 2 && typeof name == 'string' && typeof defaults == 'string'
+            && window.jQuery.fn[defaults] && name != defaults) {
+        window.jQuery.fn[name] = $plug[name] = window.jQuery.fn[defaults];
+        return;
+    }
+    if (typeof name != 'string') {
+        functions = defaults;
+        defaults = name;
+        name = null;
+    }
+    if (name && !defaults && !functions)
+        return $plug[name];
+    if (!functions || typeof defaults == 'function') {
+        functions = defaults;
+        defaults = {};
+    }
+    if (typeof functions == 'function')
+        functions = {init:functions};
+
+    return (function ($) {
+        var plug = function (element, options, init) {
+            this.defaults = Object.create((plug.defaults||defaults));
+            this.options = $.extend(this.defaults, options);
+            this.element = $(element);
+            if (init) this.init = init;
+            this.init.apply(this, [this.element, this.options]);
+        };
+        if (plug.defaults)
+            plug.prototype.defaults = plug.defaults;
+        plug.prototype = $.extend(plug.prototype, functions);
+        var fn = function (options) {
+            $(this).each(function () {
+                new plug(this, options);
+            });
+        };
+        if (name) {
+            $plug[name] = plug;
+            $.fn[name] = fn;
+        } else {
+            return fn;
+        }
+    })(window.jQuery);
+}</code></pre>
+        </p>
+
+        <h2>What is the advantage of using $plug?</h2>
+
+        <p>
+        <ul>
+            <li>Develop plugins faster than jQuery's native plugin system.</li>
+            <li>Simple and powerful.</li>
+            <li>Very tiny source-code.</li>
+            <li>Built-in options system.</li>
+            <li>Easy element handling.</li>
+            <li>Very flexible.</li>
+        </ul>
+        </p>
+        <h2>How to use?</h2>
+
+        <p>
+            $plug has a very flexible code structure to apply.
+        <blockquote>
+            <h3>The default structure to create a plugin.</h3>
+            <pre><code class="javascript">$plug(name [, defaults] [, functions])</code></pre>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>name: </strong><i>string</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+                <li><strong>defaults: </strong><i>object</i> default values of the plugin.</li>
+                <li><strong>functions: </strong><i>object</i> the class of the plugin. <strong>init</strong> is
+                    constructor function and required.
+                    In the method scopes you should reach the element using <code>this.element</code> and options using
+                    <code>this.options</code>. Also <strong>element</strong> and <strong>options</strong> will be passed
+                    into the constructor method as arguments.
+                </li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$plug('helloworld', {myname: 'fapprika'}, {
+    init: function() {
+        this.element.html('Hello ' + this.options.myname);
+    }
+});</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test">
+                TEST AREA
+            </div>
+            <button onclick="$('.test').helloworld();">$('.test').helloworld();</button>
+            <button onclick="$('.test').helloworld({myname: 'no one'});">$('.test').helloworld({myname: 'no one.'});
+            </button>
+        </blockquote>
+        <blockquote>
+            <h3>You don't have to define any default variables.</h3>
+            <pre><code class="javascript">$plug(name [, functions])</code></pre>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>name: </strong><i>string</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+                <li><strong>functions: </strong><i>object</i> the class of the plugin. <strong>init</strong> is
+                    constructor function and required.
+                    In the method scopes you should reach the element using <code>this.element</code> and options using
+                    <code>this.options</code>. Also element and options will be passed into the constructor method as
+                    arguments.
+                </li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$plug('helloworld2', {
+    init: function() {
+        this.element.html('Hello ' + this.options.myname);
+    }
+});</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test-1">
+                TEST AREA
+            </div>
+            <button onclick="$('.test-1').helloworld2();">$('.test-1').helloworld2();</button>
+            <button onclick="$('.test-1').helloworld2({myname: 'fapprika'});">$('.test-1').helloworld2({myname:
+                'fapprika.'});
+            </button>
+        </blockquote>
+        <blockquote>
+            <h3>If you use only init function for your plugin, you can use the following syntax.</h3>
+            <pre><code>$plug(name [, init])</code></pre>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>name: </strong><i>string</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+                <li><strong>init: </strong><i>function</i> initializer method.
+                    In the scope you should reach the element using <code>this.element</code> and options using
+                    <code>this.options</code>. Also element and options will be passed into the constructor method as
+                    arguments.
+                </li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$plug('helloworld3', function() {
+    this.element.html('Hello ' + this.options.myname);
+});</code></pre>
+            ..or..
+            <pre><code class="javascript">$plug('helloworld3', {myname: 'fatih'}, function() {
+    this.element.html('Hello ' + this.options.myname);
+});</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test-2">
+                TEST AREA
+            </div>
+            <button onclick="$('.test-2').helloworld3();">$('.test-2').helloworld3();</button>
+            <button onclick="$('.test-2').helloworld3({myname: 'fapprika'});">$('.test-2').helloworld3({myname:
+                'fapprika.'});
+            </button>
+        </blockquote>
+        <blockquote>
+            <h3>If you use just name, you will get the plugin you already created.</h3>
+            <pre><code>$plug(name) or $plug[name] or $plug.name</code></pre>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>name: </strong><i>string</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$plug('helloworld3');
+$plug.helloworld3;
+$plug['helloworld3'];</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test-3">
+                TEST AREA
+            </div>
+            <button onclick="$('.test-3').html('helloworld ' + ($plug('helloworld') ? 'exists.' : 'not exists.'));">
+                $('.test-3').html('helloworld ' + ($plug('helloworld') ? 'exists.' : 'not exists.'));
+            </button>
+            <button onclick="$('.test-3').html('helloworld4 ' + ($plug('helloworld4') ? 'exists.' : 'not exists.'));">
+                $('.test-3').html('helloworld4 ' + ($plug('helloworld4') ? 'exists.' : 'not exists.'));
+            </button>
+        </blockquote>
+        <blockquote>
+            <h3>If you use just init, you will get the plugin body to append into <code>$.fn</code> of jQuery.</h3>
+            <pre><code>$plug(init)</code></pre>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>init: </strong><i>function</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$.fn.helloworld5 = $plug({myname: 'fapprika'}, function(elm) {
+    this.element.html('Hello ' + this.options.myname);
+};</code></pre>
+            ...or...
+            <pre><code class="javascript">$.fn.helloworld5 = $plug(function(elm) {
+    this.element.html('Hello ' + (this.options.myname||'anyone.'));
+};</code></pre>
+            ...or...
+            <pre><code class="javascript">$.fn.helloworld5 = $plug({myname: 'fapprika'}, {
+    init: function(elm) {
+        this.element.html('Hello ' + this.options.myname);
+    }
+});</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test-4">
+                TEST AREA
+            </div>
+            <button onclick="$('.test-4').helloworld5();">$('.test-4').helloworld5();</button>
+            <button onclick="$('.test-4').helloworld5({myname: 'no one'});">$('.test-4').helloworld5({myname: 'no
+                one'});
+            </button>
+        </blockquote>
+        <blockquote>
+            <h3>You can alias your existing plugins.</h3>
+            <pre><code>$plug(name, plugin)</code></pre>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>name: </strong><i>string</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+                <li><strong>plugin: </strong><i>string</i> name of the existing plugin to be aliased.</li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$plug('helloworld6', 'html');</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test-5">
+                TEST AREA
+            </div>
+            <button onclick="$('.test-5').helloworld6('Hello fapprika');">$('.test-5').helloworld6('Hello fapprika');
+            </button>
+            <button onclick="$('.test-5').helloworld6('Hello everyone.');">$('.test-5').helloworld6('Hello everyone.');
+            </button>
+        </blockquote>
+        <blockquote>
+            <h3>You can change the defaults after you created the plugin.</h3>
+            <pre><code>$plug(name).defaults = defaultobject</code></pre>
+            <ul>
+                <li><strong>name: </strong><i>string</i> name of the plugin, also will be used for the plugin function
+                    name.
+                </li>
+                <li><strong>defaultobject</strong><i>object</i> hash table of default variables.</li>
+            </ul>
+            <h4>Example:</h4>
+
+            <pre><code class="javascript">$plug('helloworld7', {myname: 'fapprika'}, function () {
+    this.element.html('Hello ' + this.options.myname);
+});
+$plug.helloworld7.defaults = {myname: 'anyone'};</code></pre>
+            <h4>Example Test:</h4>
+
+            <div class="test-6">
+                TEST AREA
+            </div>
+            <button onclick="$('.test-6').helloworld7();">$('.test-6').helloworld7();</button>
+            <button onclick="$('.test-6').helloworld7({myname: 'fapprika'});">$('.test-6').helloworld7({myname:
+                'fapprika'});
+            </button>
+        </blockquote>
+        </p>
+        <h2>Licensing</h2>
+        <p>
+            Plug is licensed under MIT license. For details: <a href="http://www.opensource.org/licenses/mit-license.php">
+            http://www.opensource.org/licenses/mit-license.php
+            </a>
+        </p>
+    </article>
+</section>
+<footer>
+    <small>Proudly developed by <a href="fapprika.com">fapprika.com</a> &copy; 2011</small>
+</footer>
+</div>
+</body>
+</html>
