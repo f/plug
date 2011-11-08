@@ -73,4 +73,10 @@ button {
 
 footer {
     margin: 40px 0px;
+    line-height: 26px;
+}
+
+footer img {
+    vertical-align: middle;
+    margin-top: -9px;
 }
