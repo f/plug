@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <title>trap.js | yet another plug made by plug.js</title>
+    <script src="//code.jquery.com/jquery-latest.js"></script>
+    <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/idea.min.css">
+    <link rel="stylesheet" href="../../style.css?v1">
+    <script>
+        $(document).ready(function() {
+            $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+        });
+    </script>
+    <script src="../../plug.js"></script>
+    <script src="trap.plug.js"></script>
+    <script>
+        $(function() {
+            $('article h2, *[data-trap]').trap();
+        });
+    </script>
+    <style>body {min-height: 5000px;}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+    <h1>
+        <img src="trap.png">
+        trap.js
+        <small>trapping elements plugin made by plug.js framework for jQuery</small>
+    </h1>
+    <span>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="fapprika">Tweet</a>
+        <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+    </span>
+</header>
+<section>
+    <article>
+        <h2 data-trap="how">Get it now!</h2>
+        <p>
+            You can download
+            <a href="trap.plug.min.js">compressed</a> or
+            <a href="trap.plug.js">uncompressed</a> versions of $plug.
+        </p>
+        <h2 data-trap="license">Licensing</h2>
+        <p>
+            Plug is licensed under MIT license. For details: <a href="http://www.opensource.org/licenses/mit-license.php">
+            http://www.opensource.org/licenses/mit-license.php</a>
+        </p>
+        <h2 data-trap="how">How to use?</h2>
+        <p>
+            Has a very easy usage. There is no option to put.
+            <pre><code class="javascript">$('selector').trap();</code></pre>
+        </p>
+        <h2 data-trap="requirements">Requirements</h2>
+        <p>
+            When using trap, you require adding these CSS classes into your project:
+            <pre><code class="css">.trapped {position: fixed !important; top: 0 !important;}
+.trap-after {visibility: hidden; margin-top: 0; height: 0;}</code></pre>
+        </p>
+        <h2 data-trap="demo">Demo
+            <small>&rarr;You'll see this text until...</small>
+        </h2>
+        <p style="height: 600px;">
+            This page's headers made by trap.js, please scroll the page.
+        </p>
+        <h2 data-trap="demo">Demo
+            <small>&rarr;Another element trapped...</small>
+        </h2>
+        <p style="height: 300px;"></p>
+        <h2 data-trap="demo">Demo
+            <small>&rarr;And another...</small>
+        </h2>
+        <p style="height: 300px;"></p>
+        <h2 data-trap="demo">Demo
+            <small>&rarr;And another... And another...</small>
+        </h2>
+        <p style="height: 300px;"></p>
+        <h2 data-trap="demo">Thanks!
+            <small>&rarr;Now you can go up!</small>
+        </h2>
+        <p></p>
+    </article>
+</section>
+<footer>
+    <small>Proudly developed by <a href="http://fapprika.com"><img src="../../fapprika-logo.png"></a> &copy; 2011, created with
+        <a href="http://lab.fapprika.com/plug/">$plug.js</a></small>
+</footer>
+</div>
+</body>
+</html>

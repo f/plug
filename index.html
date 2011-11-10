@@ -1,35 +1,47 @@
 <!doctype html>
 <html>
 <head>
+    <title>plug.js</title>
     <script src="//code.jquery.com/jquery-latest.js"></script>
     <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
     <link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/idea.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v1">
     <script>
         $(document).ready(function() {
             $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
         });
     </script>
     <script src="plug.js"></script>
-    <script src="plugins.js"></script>
+    <script src="plugins.js?v4.1"></script>
+    <script src="in/trap.js/trap.plug.min.js"></script>
+    <script>
+        $(function() {
+            $('article h2, *[data-trap]').trap();
+        });
+    </script>
 </head>
 <body>
 <div class="wrap">
 <header>
     <h1>
         <img src="plug.png">
-        plug.js</h1>
+        plug.js
+    </h1>
+    <span>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="fapprika">Tweet</a>
+        <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+    </span>
 </header>
 <section>
     <article>
 
-        <h2>What is $plug?</h2>
+        <h2 data-trap="what">What is $plug?</h2>
 
         <p>
             $plug is simple, tiny, only <strong>4 KB</strong> sized helper to create element based plugins for jQuery.
         </p>
 
-        <h2>Get it now!</h2>
+        <h2 data-trap="get">Get it now!</h2>
         <p>
             You can download
             <a href="plug.min.js"> compressed</a> or
@@ -88,7 +100,7 @@ function $plug(name, defaults, functions) {
 }</code></pre>
         </p>
 
-        <h2>What is the advantage of using $plug?</h2>
+        <h2 data-trap="advantages">What is the advantage of using $plug?</h2>
 
         <p>
         <ul>
@@ -100,7 +112,8 @@ function $plug(name, defaults, functions) {
             <li>Very flexible.</li>
         </ul>
         </p>
-        <h2>How to use?</h2>
+
+        <h2 data-trap="how">How to use?</h2>
 
         <p>
             $plug has a very flexible code structure to apply.
@@ -310,16 +323,55 @@ $plug.helloworld7.defaults = {myname: 'anyone'};</code></pre>
             </button>
         </blockquote>
         </p>
-        <h2>Licensing</h2>
+        <h2 data-trap="license">Licensing</h2>
         <p>
             Plug is licensed under MIT license. For details: <a href="http://www.opensource.org/licenses/mit-license.php">
             http://www.opensource.org/licenses/mit-license.php
             </a>
         </p>
+        <h2 data-trap="examples">More Examples</h2>
+        <p>
+            <h3>Box Shadower</h3>
+            <div class="tester shadow">TEST AREA</div>
+            <pre><code class="javascript">$plug('shadow', {
+    inset: false,
+    top: 3,
+    left: 3,
+    blur: 10,
+    spread: 2,
+    color: '#ccc',
+    duration: '1000ms',
+    prefixes: ['-webkit-', '-moz-', '-o-', '-ms-','']
+}, {
+    init: function() {
+        for (var i in this.options.prefixes) {
+            this.element.css(this.options.prefixes[i] + 'transition-duration',
+                    this.options.duration);
+
+            var css = this.getCss(this.options.prefixes[i]);
+            this.element.css(css);
+        }
+    },
+    getCss: function(prefix) {
+        var css = {};
+        css[prefix + 'box-shadow'] =
+                (this.options.inset?'inset ':'')
+                        + this.options.left + 'px '
+                        + this.options.top + 'px '
+                        + this.options.blur + 'px '
+                        + this.options.spread + 'px'
+                        + this.options.color;
+        return css;
+    }
+});</code></pre>
+        <button onclick="$('.shadow').shadow({top: 10, left: 5});">$('.shadow').shadow({top: 10, left: 5});</button>
+        <button onclick="$('.shadow').shadow({top: 20, left: -5});">$('.shadow').shadow({top: 20, left: -5});</button>
+        <button onclick="$('.shadow').shadow({top: 10, left: 0, color: '#000', duration: '500ms'});">$('.shadow').shadow({top: 10, left: 0, color: '#000', duration: '500ms'});</button>
+        </p>
     </article>
 </section>
 <footer>
-    <small>Proudly developed by <a href="fapprika.com"><img src="fapprika-logo.png"></a> &copy; 2011</small>
+    <small>Proudly developed by <a href="http://fapprika.com"><img src="fapprika-logo.png"></a> &copy; 2011</small>
 </footer>
 </div>
 </body>

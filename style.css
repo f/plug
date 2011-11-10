@@ -11,6 +11,16 @@ h1, h2, h3, h4 {
     font-family: RokkittRegular;
 }
 
+h1 small {
+    font-size: 20px;
+    color: #ccc;
+}
+
+h2 small {
+    font-size: 18px;
+    color: #ccc;
+}
+
 a {
     color: #ff9451;
     text-decoration: none;
@@ -21,9 +31,8 @@ a:hover {
 }
 
 h1 {
-    margin: 0;
+    margin: 10px 0px;
     font-size: 40px;
-    border-bottom: 1px solid #CCC;
     line-height: 48px;
 }
 
@@ -31,7 +40,20 @@ h1 img {
     vertical-align: middle;
 }
 
-h1, h2 {
+header {
+    border-bottom: 1px dotted #CCC;
+    overflow: hidden;
+}
+
+h1 {
+    float: left;
+}
+
+header span {
+    float: right;
+}
+
+h2 {
     border-bottom: 1px dotted #CCC;
     padding-bottom: 5px;
 }
@@ -45,14 +67,14 @@ pre code {
     padding: 10px;
     border-radius: 5px;
     font-family: Monaco, Menlo, monospace;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 li code, h3 code {
     display: inline-block;
 }
 
-.test, .test-1, .test-2, .test-3, .test-4, .test-5, .test-6 {
+.tester, .test, .test-1, .test-2, .test-3, .test-4, .test-5, .test-6 {
     border: 2px dashed #f8f8f8;
     border-radius: 5px;
     padding: 10px;
@@ -79,4 +101,30 @@ footer {
 footer img {
     vertical-align: middle;
     margin-top: -9px;
+}
+.trapped:after {
+    content:'$plug.js';
+    text-align: right;
+    float: right;
+}
+
+.trapped {
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    margin-top: 0;
+    padding-top: 20px;
+    display: block;
+    width: 820px;
+    padding-left: 10px;
+    margin-left: -10px;
+    padding-right: 10px;
+    border: 0;
+    box-shadow: 0px 2px 9px -5px #ccc;
+}
+.trap-after {
+    visibility: hidden;
+    margin-top: 0;
+    height: 0;
+    display: block;
 }
